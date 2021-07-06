@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">NewsApp</string>
     <string name="meme">meme</string>
+    <string name="news_article">news article</string>
+    <string name="category">Category</string>
+    <string-array name="category">
+        <item>General</item>
+        <item>Health</item>
+        <item>Sports</item>
+        <item>Business</item>
+        <item>Technology</item>
+        <item>Entertainment</item>
+    </string-array>
 </resources>
