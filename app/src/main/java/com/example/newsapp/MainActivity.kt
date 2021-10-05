@@ -8,11 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
 import com.example.newsapp.databinding.ActivityMainBinding
+import com.example.newsapp.newsapi.News
 
 
 class MainActivity : AppCompatActivity(), NewsItemClicked {
@@ -31,7 +29,7 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
         binding.recyclerView.adapter = _adapter
 
         val category = resources.getStringArray(R.array.category)
-        val arrayAdapter = ArrayAdapter(this,R.layout.dropdown_item,category)
+        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, category)
         binding.autoCompleteTextView.setAdapter(arrayAdapter)
 
         binding.autoCompleteTextView.onItemClickListener =
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
                 ).show()
                 val inputText = category.get(position)
                 var selectedCategory = ""
-                when(inputText){
+                when (inputText) {
                     "General" -> selectedCategory = "general"
                     "Entertainment" -> selectedCategory = "entertainment"
                     "Sports" -> selectedCategory = "sports"
@@ -87,7 +85,7 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     override fun onItemClicked(item: News) {
         val url: String = item.url
         val builder: CustomTabsIntent.Builder = CustomTabsIntent.Builder()
-        val customTabsIntent: CustomTabsIntent  = builder.build()
+        val customTabsIntent: CustomTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(url))
     }
 
