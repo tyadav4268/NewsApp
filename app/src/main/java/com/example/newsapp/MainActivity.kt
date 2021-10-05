@@ -3,6 +3,7 @@ package com.example.newsapp
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -11,6 +12,11 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.databinding.ActivityMainBinding
 import com.example.newsapp.newsapi.News
+import com.example.newsapp.newsapi.NewsApiResponse
+import com.example.newsapp.newsapi.NewsService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity(), NewsItemClicked {
@@ -54,32 +60,22 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     private fun fetchData(category: String) {
-//        val url = "https://saurav.tech/NewsAPI/top-headlines/category/$category/in.json"
-//        val jsonObjectRequest = JsonObjectRequest(
-//            Request.Method.GET,
-//            url,
-//            null,
-//            {
-////                Log.d("response", "success")
-//                val newsJsonArray = it.getJSONArray("articles")
-//                val newsArray = ArrayList<News>()
-//                for(i in 0 until newsJsonArray.length()){
-//                    val newsJsonObject = newsJsonArray.getJSONObject(i)
-//                    val news = News(
-//                        newsJsonObject.getString("title"),
-//                        newsJsonObject.getString("author"),
-//                        newsJsonObject.getString("url"),
-//                        newsJsonObject.getString("urlToImage")
-//                    )
-//                    newsArray.add(news)
-//                }
-//                _adapter.updateNews(newsArray)
-//            },
-//            {
-//
-//            }
-//        )
-//        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+        NewsService.getNews(category).enqueue(object : Callback<NewsApiResponse> {
+            override fun onResponse(
+                call: Call<NewsApiResponse>,
+                response: Response<NewsApiResponse>
+            ) {
+                _adapter.updateNews(
+                    response.body()?.let { it.articles as ArrayList<News> }
+                        ?: arrayListOf()
+                )
+            }
+
+            override fun onFailure(call: Call<NewsApiResponse>, t: Throwable) {
+                Log.e("NEWS_API_CALL", "Failed to load news from API")
+                _adapter.updateNews(arrayListOf())
+            }
+        })
     }
 
     override fun onItemClicked(item: News) {
@@ -88,6 +84,4 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
         val customTabsIntent: CustomTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(url))
     }
-
-
 }
