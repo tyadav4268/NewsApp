@@ -56,32 +56,32 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     private fun fetchData(category: String) {
-        val url = "https://saurav.tech/NewsAPI/top-headlines/category/$category/in.json"
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET,
-            url,
-            null,
-            {
-//                Log.d("response", "success")
-                val newsJsonArray = it.getJSONArray("articles")
-                val newsArray = ArrayList<News>()
-                for(i in 0 until newsJsonArray.length()){
-                    val newsJsonObject = newsJsonArray.getJSONObject(i)
-                    val news = News(
-                        newsJsonObject.getString("title"),
-                        newsJsonObject.getString("author"),
-                        newsJsonObject.getString("url"),
-                        newsJsonObject.getString("urlToImage")
-                    )
-                    newsArray.add(news)
-                }
-                _adapter.updateNews(newsArray)
-            },
-            {
-
-            }
-        )
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
+//        val url = "https://saurav.tech/NewsAPI/top-headlines/category/$category/in.json"
+//        val jsonObjectRequest = JsonObjectRequest(
+//            Request.Method.GET,
+//            url,
+//            null,
+//            {
+////                Log.d("response", "success")
+//                val newsJsonArray = it.getJSONArray("articles")
+//                val newsArray = ArrayList<News>()
+//                for(i in 0 until newsJsonArray.length()){
+//                    val newsJsonObject = newsJsonArray.getJSONObject(i)
+//                    val news = News(
+//                        newsJsonObject.getString("title"),
+//                        newsJsonObject.getString("author"),
+//                        newsJsonObject.getString("url"),
+//                        newsJsonObject.getString("urlToImage")
+//                    )
+//                    newsArray.add(news)
+//                }
+//                _adapter.updateNews(newsArray)
+//            },
+//            {
+//
+//            }
+//        )
+//        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
 
     override fun onItemClicked(item: News) {
